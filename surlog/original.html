@@ -1,0 +1,275 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<title>
+Biophysics Surgery Logger - Imperial College London
+</title>
+
+<!--
+
+Hey friend! This file shows you how 
+the CSS Theme you downloaded looks with 
+some example HTML form markup.
+
+Check out the README.txt for more info.
+
+-->
+
+<!-- Meta Tags -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<!-- JavaScript -->
+<script type="text/javascript" src="scripts/wufoo.js"></script>
+
+<!-- CSS -->
+<link rel="stylesheet" href="css/structure.css" type="text/css" />
+<link rel="stylesheet" href="css/form.css" type="text/css" />
+<link rel="stylesheet" href="css/theme.css" type="text/css" />
+
+</head>
+
+<body id="public">
+
+<div id="container">
+
+<h1><a id="logo" href="">Logo</a></h1>
+
+<form class="wufoo" action="" method="">
+
+	<div class="info">
+	<h2>Biophysics Surgery Logger</h2>
+	<div>Rodent surgery logger of the biophysics group - Imperial College London</div>
+	</div>
+
+	<ul>
+
+	<li class="complex">
+	<label class="desc">Current user</label>
+	<div>
+		<span class="left">
+		<input class="field text" type="text"  maxlength="20" value="${logged_user}" />
+		<label></label>
+		</span>
+
+		<span class="right">
+		<select class="field select"> 
+		<option value="" selected="selected">Change User</option>
+		${users_dropbox}
+		</select>
+		<label></label>
+		</span>
+	</div>
+	</li>
+
+	<li class="section first">
+		<h3>User's open surgeries</h3>
+		<div>Currently open surgeries for the user</div>
+	</li>
+
+        ${open_surgeries_table}
+
+	<li>
+	<label class="desc">Comment box<!-- <span class="req">*</span>--></label>
+		<div>
+		<textarea rows="10" cols="50" class="field textarea medium">No comment available</textarea>
+		</div>
+
+		<p class="instruct"><br/>Please enter here any comment that you feel it may be relevant to your surgery, such as blah blah</p>
+	</li>
+
+	<li>
+	<label class="desc">Small Field</label>
+		<div>
+		<input class="field text small" type="text" maxlength="255" value="Example text."/> 
+		</div>
+	</li>
+
+	<li>
+	<label class="desc">Medium Field</label>
+		<div>
+		<input class="field text medium" type="text" maxlength="255" value="Example text."/> 
+		</div>
+	</li>
+
+	<li>
+	<label class="desc">Large Field</label>
+		<div>
+		<input class="field text large" type="text" maxlength="255" value="Example text."/> 
+		</div>
+	</li>
+
+	<li class="section">
+		<h3>Section Title</h3>
+		<div>Description of another section.</div>
+	</li>
+
+	<li>
+	<label class="desc">Multiple Choice</label>
+		<div>
+		<span><input id="choice1" name="mc" class="field radio" type="radio" value="Robots" checked="checked" />
+		<label class="choice" for="choice1">Robots</label></span>
+
+		<span><input id="choice2" name="mc" class="field radio" type="radio" value="Monkeys"/>
+		<label class="choice" for="choice2">Monkeys</label></span>
+
+		<span><input id="choice3" name="mc" class="field radio" type="radio" value="Ninjas"/>
+		<label class="choice" for="choice3">Ninjas</label></span>
+		</div>
+	</li>
+
+	<li>
+	<label class="desc">Checkboxes</label>
+		<div>
+		<span><input class="field checkbox" type="checkbox" value="Invisibility" checked="checked" />
+		<label class="choice">Invisibility</label></span>
+	
+		<span><input class="field checkbox" type="checkbox" value="Super Strength"/>
+		<label class="choice">Super Strength</label></span>
+
+		<span><input class="field checkbox" type="checkbox" value="Eye Lasers"/>
+		<label class="choice">Eye Lasers</label></span>
+		</div>
+	</li>
+
+	<li class="section">
+		<h3>Section Title</h3>
+		<div>Description of another section.</div>
+	</li>
+
+	<li>
+	<label class="desc">Name</label>
+		<span>
+		<input class="field text" size="2" value=""/>
+		<label>Title</label>
+		</span>
+	
+		<span>
+		<input class="field text" size="8" value=""/>
+		<label>First</label>
+		</span>
+	
+		<span>
+		<input class="field text" size="14" value=""/>
+		<label>Last</label>
+		</span>
+	
+		<span>
+		<input class="field text" size="3" value=""/>
+		<label>Suffix</label>
+		</span>
+	</li>
+
+	<li>
+	<label class="desc">Date</label>
+		<span>
+		<input class="field text" size="2" type="text" maxlength="2" value=""/> / 
+		<label>MM</label>
+		</span>
+
+		<span>
+		<input class="field text" size="2" type="text" maxlength="2" value=""/> / 
+		<label>DD</label>
+		</span>
+
+		<span>
+		<input class="field text" size="4" type="text" maxlength="4" value=""/>
+		<label>YYYY</label>
+		</span>
+	
+		<span>
+		<img src="images/calendar.png" class="icon" alt="Pick date." />
+		</span>
+	</li>
+
+	<li>
+	<label class="desc">Time</label>
+		<span>
+		<input class="field text" size="2" type="text" maxlength="2" value=""/> : 
+		<label>HH</label>
+		</span>
+	
+		<span>
+		<input class="field text" size="2" type="text" maxlength="2" value=""/> : 
+		<label>MM</label>
+		</span>
+
+		<span>
+		<input class="field text" size="2" type="text" maxlength="2" value=""/>
+		<label>SS</label>
+		</span>
+
+		<span>
+		<select class="field select" style="width:4em">
+		<option value="AM">AM</option>
+		<option value="PM">PM</option>
+		</select>
+		<label>AM/PM</label>
+		</span>
+		</li>
+
+	<li>
+	<label class="desc">Phone</label>
+		<span>
+		<input class="field text" type="text" size="3" maxlength="3" value=""/> - 
+		<label>###</label>
+		</span>
+
+		<span>
+		<input class="field text" type="text" size="3" maxlength="3" value=""/> - 
+		<label>###</label>
+		</span>
+
+		<span>
+		<input class="field text" type="text" size="4" maxlength="4" value=""/>
+		<label>####</label>
+		</span>
+	</li>
+
+	<li>
+	<label class="desc">Price</label>
+		<span class="symbol">
+		&#36;
+		</span>
+	
+		<span>
+		<input class="field text currency" type="text" size="10" value=""/> .
+		<label>Dollars</label>
+		</span>
+
+		<span>
+		<input class="field text" size="2" type="text" maxlength="2" value=""/>
+		<label>Cents</label>
+		</span>
+	</li>
+
+
+	<li>
+	<label class="desc">Website</label>
+		<div>
+		<input class="field text large" type="url" maxlength="255" value="http://"/> 
+		</div>
+	</li>
+
+	<li class="complex">
+	<label class="desc">File Upload</label>
+		<div>
+		<span><input class="field file" type="file" value=""/></span>
+		</div>
+	</li>
+
+	<li class="buttons">
+		<input id="saveForm" class="btTxt" type="submit" value="Submit" />
+	</li>
+	</ul>
+
+</form>
+
+</div><!--container-->
+
+
+</body>
+
+</html>

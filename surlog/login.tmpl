@@ -1,0 +1,27 @@
+        <form class="wufoo" action="/cgi-bin/surlogw.py" method="post">
+
+	<ul>
+
+	<li class="complex">
+	<label class="desc">Current user</label>
+	<div>
+		<span class="center">
+		<select name="login" class="field select" onchange='this.form.submit()'> 
+		<option value="" selected="selected">Change User</option>
+		${users_dropbox}
+		</select>
+		<label></label>
+		</span>
+	</div>
+	</li>
+
+    <noscript><input type="submit" value="${submit_text}" /></noscript>
+       
+</form>
+
+</div><!--container-->
+
+
+</body>
+
+</html>

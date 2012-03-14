@@ -1,0 +1,42 @@
+table.altrowstable {
+	font-family: verdana,arial,sans-serif;
+	font-size:11px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #a9c6c9;
+	border-collapse: collapse;
+}
+table.altrowstable th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #a9c6c9;
+}
+table.altrowstable td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #a9c6c9;
+}
+.oddrowcolor{
+	background-color:#d4e3e5;
+}
+.evenrowcolor{
+	background-color:#c3dde0;
+}
+.headerbar{
+        display:block;
+        height:1.5em; /* height to miss header and footer */
+        background-color:#c3dde0;
+        padding-left:10px; /* pad left to avoid navigation div if required */
+        padding-right:10px; /* pad left to avoid navigation div if required */
+        padding-top:10px; /* pad left to avoid navigation div if required */
+}
+.actionbar{
+        display:block;
+        height:1.5em; /* height to miss header and footer */
+        background-color:#d4e3e5;
+        padding-left:10px; /* pad left to avoid navigation div if required */
+        padding-right:10px; /* pad left to avoid navigation div if required */
+        padding-top:10px; /* pad left to avoid navigation div if required */
+}

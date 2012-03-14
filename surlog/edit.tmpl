@@ -1,0 +1,58 @@
+        <form name="edit" class="wufoo" action="/cgi-bin/surlogw.py" method="post">
+
+	<ul>
+
+	<li class="section second">
+		${edit_surgery_title}
+	</li>
+
+	<li>
+	<label class="desc"></label>
+		<span>
+		<label>ID</label>
+		<input name="surgery_ID" class="field text" size="2" readonly value="${surgery_ID}" />
+		</span>
+	
+		<span>
+		<label>Description of procedure</label>
+		<input name="surgery_name" class="field text" size="35" value="${surgery_name}"/>
+		</span>
+
+		<span>
+		<label>Status</label>
+		<input name="surgery_status" class="field text" size="40" disabled value="${surgery_status}"/>
+		</span>
+
+
+	</li>
+
+	<li>
+	<label class="desc">Treatments</label>
+		<div>
+		${treatments_boxes}
+		</div>
+	</li>
+
+	<li>
+	<label class="desc">Comment box<!-- <span class="req">*</span>--></label>
+		<div>
+		<textarea name="surgery_comment" rows="10" cols="50" class="field textarea medium">${surgery_comment}</textarea>
+		</div>
+
+		<p class="instruct"><br/>Please enter here any comment that you feel it may be relevant to your surgery, such as blah blah</p>
+	</li>
+
+        </ul>
+	
+	<input type="hidden" name="modified" value="${surgery_ID}">
+
+    <input type="submit" value="${submit_text}" />
+       
+</form>
+
+</div><!--container-->
+
+
+</body>
+
+</html>
