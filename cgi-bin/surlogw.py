@@ -33,6 +33,9 @@ import cPickle as pickle
 
 
 url = '/cgi-bin/surlogw.py'
+authorised_IPs = ['127.0.0.1']
+locked = False
+
 
 start_list = -30
 end_list = None # shows last 30 surgeries
@@ -126,6 +129,8 @@ class surgeryLoggerApp():
         if string_cookie:
             cookie.load(string_cookie)
             cookie['sid']['expires'] = 0
+            cookie['user']['expires'] = 0
+            cookie['IP']['expires'] = 0
         
         return cookie
 
@@ -198,6 +203,7 @@ class surgeryLoggerApp():
         chk_first_check = self.form.getvalue("chk_first_check", "")
         chk_second_check = self.form.getvalue("chk_second_check", "")
         chk_aborted = self.form.getvalue("chk_aborted", "")
+        reason_aborted = self.form.getvalue("reason_aborted","")
 
         s.comment = surgery_comment
 
@@ -206,10 +212,15 @@ class surgeryLoggerApp():
         if chk_saline == 'on': s.stampProperty('saline')
         if chk_recovered == 'on': s.stampProperty('recovered')
         if chk_first_check == 'on': s.stampProperty('first_check')
+        
         if chk_second_check == 'on':
             s.stampProperty('second_check')
             s.Close()
-        if chk_aborted == 'on': s.stampProperty('aborted')
+            
+        if chk_aborted == 'on': 
+            s.stampProperty('aborted')
+            s.aborted = reason_aborted
+            s.Close()
             
         
         self.ss.saveToFile()
@@ -253,9 +264,14 @@ class surgeryLoggerApp():
 
         for s in self.ss.surgeriesFromUser(ui)[start_list:end_list]:
             
-            isOpen = [ s.getEndTime(), '<strong>Open</strong>' ][s.isOpen()]
+            if s.isOpen():
+                action = '<a href=\"%s?edit=%s\">Edit</a>' % (url, s.sid)
+                isOpen = '<strong>Open</strong>'
+            else:
+                action = '<a href=\"%s?view=%s\">View</a>' % (url, s.sid)
+                isOpen = s.getEndTime()
                 
-            table += "<tr><td>#%s</td><td>%s</td><td>%s</td><td>%s</td><td><a href=\"%s?edit=%s\">Edit</a></td></tr>\n" % (s.sid, s.name, s.getStartTime(), isOpen, url, s.sid)
+            table += "<tr><td>#%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n" % (s.sid, s.name, s.getStartTime(), isOpen, action)
 
         table += "</table>"
 
@@ -264,22 +280,21 @@ class surgeryLoggerApp():
         self.page = 'list.tmpl'
 
 
-    def listAllPage(self):
-
-        #Listing all users surgeries
-        #if listall:
+    def listAllPage(self, onlyOpen=False):
+        '''
+        '''
         
         table  =  "<table class=\"altrowstable\" id=\"alternatecolor\">"
         table +=  "<tr><td>#%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n" % ('ID', 'User', 'Name', 'Started on', 'Closed on')
 
         allSurgeries = self.ss.surgeriesFromUser()[start_list:end_list]
-        if int(listall) == 2 : allSurgeries = [s for s in allSurgeries if s.isOpen()]
+        if onlyOpen : allSurgeries = [s for s in allSurgeries if s.isOpen()]
 
         for s in allSurgeries:
             
             isOpen = [ s.getEndTime(), '<strong>Open</strong>' ][s.isOpen()]
                 
-            table += "<tr><td>#%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n" % (s.sid, users[s.user], s.name, s.getStartTime(), isOpen)
+            table += "<tr><td>#%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td><a href=\"%s?view=%s\">View</a></td></tr>\n" % (s.sid, users[s.user], s.name, s.getStartTime(), isOpen, url, s.sid)
         
         table += "</table>"
         
@@ -298,6 +313,55 @@ class surgeryLoggerApp():
 
         self.page = 'new.tmpl'
 
+    def viewPage(self, sid):
+        '''
+        '''
+        self.v['edit_surgery_title'] = '<h3>View an existing surgery</h3><div></div>'
+        s = self.ss.getByID(sid)
+        self.v['surgery_ID'] = sid
+        self.v['surgery_name'] = s.name
+        if s.isOpen(): self.v['surgery_status'] = 'Open on %s' % s.getStartTime()
+        else: self.v['surgery_status'] = 'Closed on %s' % s.getEndTime()
+        
+        checkboxes = '<table>'
+
+        for prp_name in surgeries_properties:
+
+            prp_values = s.properties[prp_name]
+            
+            prp_canedit = 'disabled'
+                
+            if s.isPropertyChecked(prp_name):
+                prp_isChecked = 'checked'
+            else:
+                prp_isChecked = ''
+            
+            prp_description = prp_values[2]
+            prp_time = s.getPropertyTime(prp_name)
+            
+            if ( prp_name == 'aborted' ) and prp_isChecked :
+                showReasonAborted = 'block'
+            else:
+                showReasonAborted = 'none'
+                
+
+            checkboxes += '<tr><td width=400px><input %s type="checkbox" name="chk_%s" %s /><label class="choice">%s</label></td><td>%s</td></tr>\n' % (prp_canedit, prp_name, prp_isChecked, prp_description, prp_time)
+
+
+        abortReason = "<tr><td><div id=\"reason\" class=\"required\" style=\"display: %s; margin: 10px; height: 50px; background-color: #f5f5f5; padding: 10px\" ><label>Reason for aborting<span class=\"req\">*</span></label><input type=\"text\" name=\"reason_aborted\" size=40 readonly value=\"%s\" ></div></td></tr>\n" % (showReasonAborted, s.aborted)
+
+
+        checkboxes += abortReason
+
+        checkboxes += '</table>'
+
+        
+        self.v['surgery_comment'] = s.comment
+        self.v['treatments_boxes'] = checkboxes
+
+        self.page = 'view.tmpl'
+       
+        
     def editPage(self, sid=None, new=False):
         '''
         '''
@@ -320,21 +384,37 @@ class surgeryLoggerApp():
             
         checkboxes = '<table>'
 
-        for k in surgeries_properties:
-            va = s.properties[k]
-            ce = ['disabled',''] [(s.timeFromStart() >= va[0] )]            #can Edit
-            ck = ['','checked'] [ va[1] != False ] #isChecked
-            description = va[2]
-            prp_time = s.getPropertyTime(k)
-            if k == 'aborted' :
+        for prp_name in surgeries_properties:
+
+            prp_values = s.properties[prp_name]
+            
+            if not s.canModifyProperty(prp_name):
+                prp_canedit = 'disabled'
+            else: 
+                prp_canedit = ''
+                
+            if s.isPropertyChecked(prp_name):
+                prp_isChecked = 'checked'
+            else:
+                prp_isChecked = ''
+            
+            prp_description = prp_values[2]
+            prp_time = s.getPropertyTime(prp_name)
+            
+            if prp_name == 'aborted' :
                 onclick = "onclick=\"$(this).is(':checked') && $('#reason').slideDown('slow') || $('#reason').slideUp('slow');\" "
             else:
                 onclick = ''
+                
+            if ( prp_name == 'aborted' ) and prp_isChecked :
+                showReasonAborted = 'block'
+            else:
+                showReasonAborted = 'none'
 
-            checkboxes += '<tr><td width=500px><input %s type="checkbox" name="chk_%s" %s %s /><label class="choice">%s</label></td><td>%s</td></tr>\n' % (ce, k, ck, onclick, description, prp_time)
+            checkboxes += '<tr><td width=400px><input %s type="checkbox" name="chk_%s" %s %s /><label class="choice">%s</label></td><td>%s</td></tr>\n' % (prp_canedit, prp_name, prp_isChecked, onclick, prp_description, prp_time)
 
 
-        abortReason = "<tr><td><div id=\"reason\" class=\"required\" style=\"display: none; margin: 10px; height: 50px; background-color: #f5f5f5; padding: 10px\" ><label>Enter reason for aborting</label><input type=\"text\" name=\"abortReason\" size=40></div></td></tr>\n"
+        abortReason = "<tr><td><div id=\"reason\" class=\"required\" style=\"display: %s; margin: 10px; height: 50px; background-color: #f5f5f5; padding: 10px\" ><label>Enter reason for aborting<span class=\"req\">*</span></label><input type=\"text\" name=\"reason_aborted\" size=40 value=\"%s\" ></div></td></tr>\n" % (showReasonAborted, s.aborted)
 
 
         checkboxes += abortReason
@@ -349,9 +429,15 @@ class surgeryLoggerApp():
         self.v['submit_text'] = 'Modify surgery data'
 
 
+    def forbiddenPage(self):
+        '''
+        '''
+        self.page = 'forbidden.tmpl'
+
     def elaborateInput(self):
         '''
         '''
+        
         #Getting URL parameters
         self.form = cgi.FieldStorage()
 
@@ -359,6 +445,7 @@ class surgeryLoggerApp():
         login = self.form.getvalue("login", "")
         logout = self.form.getvalue("logout", "")
         edit = self.form.getvalue("edit", "")
+        view = self.form.getvalue("view", "")
         add = self.form.getvalue("add", "")
         export = self.form.getvalue("export", "")
         listall = self.form.getvalue("listall", "")
@@ -373,12 +460,16 @@ class surgeryLoggerApp():
         
         if login: self.doLogin(login)
         if logout: self.doLogout()
+
+        isAuthorised = cgi.escape(os.environ["REMOTE_ADDR"]) in authorised_IPs or not locked
         
-        if self.loggedUser:
+        if self.loggedUser and isAuthorised:
             
             self.isLoggedIn()
         
             if edit and not modified: self.editPage(int(edit))
+            
+            elif view: self.viewPage(int(view))
 
             elif add: self.addPage()
 
@@ -398,9 +489,11 @@ class surgeryLoggerApp():
 
             else: self.listUserPage() # Default page
         
-        else:
+        elif isAuthorised:
             self.loginPage()
-            
+
+        else:
+            self.forbiddenPage()
         
     def printOutput(self):
         '''

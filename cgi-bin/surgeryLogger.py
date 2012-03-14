@@ -59,7 +59,7 @@ class surgery():
         self.opened = opened
         self.ip = IP
         self.ended = False
-        self.aborted = False
+        self.aborted = ''
         #name: [min_time, value, description, order]
         self.properties =  { 'started' : [0, False, 'Start surgery', 0],
                              'finish' : [0, False, 'Finish surgery & animal in recovery area', 1],
@@ -168,6 +168,28 @@ class surgery():
         '''
         return users[self.user]
     
+    def canModifyProperty(self, prp):
+        '''
+        '''
+        priorChecked = True
+        
+        all_prps = self.listProperties()
+        prp_min_time = self.properties[prp][0]
+        
+        time_has_elapsed = ( self.timeFromStart() >= prp_min_time )
+        
+        pos = all_prps.index(prp)
+        for k in all_prps[:pos]:
+            priorChecked &= ( self.properties[k][1] != False )
+        
+        if self.properties[prp][3] == 0: priorChecked = True
+
+        return time_has_elapsed & priorChecked & self.isOpen()
+    
+    def isPropertyChecked(self, prp):
+        '''
+        '''
+        return ( self.properties[prp][1] != False )
     
 class surgeries():
     def __init__(self):
