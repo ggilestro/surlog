@@ -149,7 +149,7 @@ class surgeryLoggerApp():
             self.v['first_link'] = '<a href="%s?add=%s">Start a new surgery</a>' % (URL, 1)
             self.v['second_link'] = '<a href="%s?listuser=%s">List all my surgeries</a>' % (URL, user)
             self.v['third_link'] = '<a href="%s?export=%s">Export all my surgeries</a>' % (URL, user)
-            self.v['logout_link'] = '<a href="%s?logout=1">Logout</a>' % url
+            self.v['logout_link'] = '<a href="%s?logout=1">Logout</a>' % URL
         
         elif self.loggedUser and self.loggedUser == '0':
             user = int(self.loggedUser)
