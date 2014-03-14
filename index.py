@@ -23,7 +23,7 @@
 #  
 
 import cgi, os, datetime, random
-import sha, Cookie, time
+import hashlib, Cookie, time
 
 import cgitb; cgitb.enable()  # for troubleshooting
 
@@ -106,7 +106,7 @@ class surgeryLoggerApp():
         # If new session
         if not string_cookie or user != None:
            # The sid will be a hash of the server time
-           sid = sha.new(repr(time.time())).hexdigest()
+           sid = hashlib.sha1(repr(time.time())).hexdigest()
            # Set the sid in the cookie
            cookie['sid'] = sid
            # Will expire in a 300 seconds
