@@ -32,18 +32,69 @@ import cPickle as pickle
 import datetime as dt
 from time import time
 
-FILENAME = '/srv/http/surlog/db/surgeries.cp'
+FILENAME = 'surgeries.cp'
 
-users = ['Rowan Baker',
-         'David Carr',
-         'Valentina Ferretti',
-         'Cigdem Gelegen',
-         'Anna Zecharia'
-         ] 
+users = [   'Reviewer',
+            'Eleonora Steinberg',
+            'David R Carr',
+            'Rowan Baker',
+            'Valentina Ferretti',
+            'Anna Y Zecharia',
+            'Qianzi Yang',
+            'Zhe Zhang',
+            'Zhiwen Ye',
+            'Xiao Yu',
+            'Cigdem Gelegen Van Eijl',
+            'Edward Harding',
+            'David Uygun',
+            'Catriona M Houston'
+        ] 
 
-surgeries_properties = ['started', 'finish', 'saline', 'recovered', 'first_check', 'second_check', 'aborted']
+surgeries_properties = ['started', 'finish', 'saline', 'recovered', 'health_check', 'aborted']
 
 #############################
+
+class user():
+    def __init__(self):
+        '''
+        '''
+        self.availableUsers = []
+        self.filename = 'users.cp'
+        self.defaultUsersList = [ {'Name' : 'Reviewer', 'email' : ''} ]
+        
+    def loadUsers(self):
+        '''
+        '''
+        try:
+            self.availableUsers = pickle.load( open( self.filename, "rb" ) )
+        except:
+            self.availableUsers = dict()
+        
+    def importUsers(self, filename):
+        '''
+        Import list of users from text file
+        format should be:
+        
+        Fullname   email@address
+        '''
+        users = []
+        f = open(filename, 'r')
+        fc = f.read()
+        for row in fc:
+            r = row.split('\t')
+            users.append( { 'Name' : r[0], 'email' : r[1] } )
+            
+        
+    def saveUsers(self):
+        '''
+        '''
+        pickle.dump( self.availableUsers, open( self.filename, "wb" ) )
+        
+    
+    def setCurrentUser(self, uid):
+        '''
+        '''
+        self.currentUser = self.availableUsers[uid]
 
 class surgery():
     def __init__(self, sid, name, user, opened, IP=None):
@@ -65,8 +116,7 @@ class surgery():
                              'finish' : [0, False, 'Finish surgery & animal in recovery area', 1],
                              'saline' : [0, False, 'Saline & post-operative drugs given', 2],
                              'recovered' : [10, False, 'Animal behaving normally & back in home cage', 3],
-                             'first_check' : [120, False, 'Follow up check - 2 hours later', 4],
-                             'second_check' : [1440, False, 'Follow up check - next day', 5 ],
+                             'health_check' : [0, False, 'Follow up check - ideally next day', 5 ],
                              'aborted' : [0, False, 'Abort this surgery (must specify reason)', 0]
                              }
                              
@@ -297,10 +347,10 @@ class surgeries():
             lu = self.l
         
         #header
-        csv += ','.join( ['ID', 'Name', 'User', 'Started', 'Ended', 'IP'] + [ k for (k,v) in lu[0].properties.items() ]) + '\n'
+        csv += ','.join( ['ID', 'Name', 'User', 'Opened', 'Ended', 'IP'] + [ k for (k,v) in lu[0].properties.items() ]) + '\n'
         
         for s in lu:
-            lp = [s.sid, s.name, s.user, s.getStartTime(), s.getEndTime(), s.ip] + [ v[1] for (k,v) in s.properties.items() ]
+            lp = [s.sid, s.name, s.user, s.getStartTime(), s.getEndTime(), s.ip] + [ s.getPropertyTime(k) for (k,v) in s.properties.items() ]
             csv += ','.join( [str(i) for i in lp] ) + '\n'
             
         return csv

@@ -8,399 +8,317 @@ p4
 S''
 sS'opened'
 p5
-F1331736903.5162439
+F1331763650.764905
 sS'ip'
 p6
 NsS'ended'
 p7
-F1331753999.524214
+I00
 sS'user'
 p8
-I1
+I5
 sS'aborted'
 p9
-S'Opened by mistake'
-p10
+S''
 sS'sid'
-p11
+p10
 I0
 sS'properties'
-p12
-(dp13
+p11
+(dp12
 S'saline'
-p14
-(lp15
+p13
+(lp14
 I0
 aI00
 aS'Saline & post-operative drugs given'
-p16
+p15
 aI2
 asS'finish'
-p17
-(lp18
+p16
+(lp17
 I0
-aF1331737092.9133661
+aI00
 aS'Finish surgery & animal in recovery area'
-p19
+p18
 aI1
 asS'second_check'
-p20
-(lp21
-I120
+p19
+(lp20
+I1440
 aI00
 aS'Follow up check - next day'
-p22
+p21
 aI5
 asS'started'
-p23
-(lp24
+p22
+(lp23
 I0
-aF1331737087.3596721
+aF1331763655.5690711
 aS'Start surgery'
-p25
+p24
 aI0
 asS'first_check'
-p26
-(lp27
-I60
+p25
+(lp26
+I120
 aI00
 aS'Follow up check - 2 hours later'
-p28
+p27
 aI4
 asS'aborted'
-p29
-(lp30
+p28
+(lp29
 I0
-aF1331737097.683033
+aI00
 aS'Abort this surgery (must specify reason)'
-p31
+p30
 aI0
 asS'recovered'
-p32
-(lp33
+p31
+(lp32
 I10
 aI00
 aS'Animal behaving normally & back in home cage'
-p34
+p33
 aI3
 assS'name'
+p34
+S'Test 1'
 p35
-S'test1'
+sba(isurgeryLogger
+surgery
 p36
-sba(isurgeryLogger
-surgery
-p37
-(dp38
+(dp37
 g4
 S''
 sg5
-F1331736977.292191
+F1331763685.5586219
 sg6
 Nsg7
-F1331752702.3335991
+I00
 sg8
-I1
-sg9
-S'Animal died'
-p39
-sg11
-I1
-sg12
-(dp40
-S'saline'
-p41
-(lp42
-I0
-aI00
-aS'Saline & post-operative drugs given'
-p43
-aI2
-asS'finish'
-p44
-(lp45
-I0
-aF1331752518.6000741
-aS'Finish surgery & animal in recovery area'
-p46
-aI1
-asS'second_check'
-p47
-(lp48
-I1440
-aI00
-aS'Follow up check - next day'
-p49
-aI5
-asS'started'
-p50
-(lp51
-I0
-aF1331743133.0852411
-aS'Start surgery'
-p52
-aI0
-asS'first_check'
-p53
-(lp54
-I120
-aI00
-aS'Follow up check - 2 hours later'
-p55
-aI4
-asS'aborted'
-p56
-(lp57
-I0
-aF1331752702.333596
-aS'Abort this surgery (must specify reason)'
-p58
-aI0
-asS'recovered'
-p59
-(lp60
-I10
-aI00
-aS'Animal behaving normally & back in home cage'
-p61
-aI3
-assg35
-S'test3'
-p62
-sba(isurgeryLogger
-surgery
-p63
-(dp64
-g4
-S''
-sg5
-F1331753636.2764511
-sg6
-Nsg7
-F1331753656.447789
-sg8
-I2
-sg9
-S'Opened by mistake'
-p65
-sg11
-I2
-sg12
-(dp66
-S'saline'
-p67
-(lp68
-I0
-aI00
-aS'Saline & post-operative drugs given'
-p69
-aI2
-asS'finish'
-p70
-(lp71
-I0
-aI00
-aS'Finish surgery & animal in recovery area'
-p72
-aI1
-asS'second_check'
-p73
-(lp74
-I1440
-aI00
-aS'Follow up check - next day'
-p75
-aI5
-asS'started'
-p76
-(lp77
-I0
-aI00
-aS'Start surgery'
-p78
-aI0
-asS'first_check'
-p79
-(lp80
-I120
-aI00
-aS'Follow up check - 2 hours later'
-p81
-aI4
-asS'aborted'
-p82
-(lp83
-I0
-aF1331753656.4477849
-aS'Abort this surgery (must specify reason)'
-p84
-aI0
-asS'recovered'
-p85
-(lp86
-I10
-aI00
-aS'Animal behaving normally & back in home cage'
-p87
-aI3
-assg35
-S'EEG1'
-p88
-sba(isurgeryLogger
-surgery
-p89
-(dp90
-g4
-S''
-sg5
-F1331754061.7303829
-sg6
-Nsg7
-F1331755067.2909701
-sg8
-I1
-sg9
-S'I stepped on the animal'
-p91
-sg11
 I3
-sg12
-(dp92
+sg9
+S''
+sg10
+I1
+sg11
+(dp38
 S'saline'
+p39
+(lp40
+I0
+aI00
+aS'Saline & post-operative drugs given'
+p41
+aI2
+asS'finish'
+p42
+(lp43
+I0
+aF1331765021.2983911
+aS'Finish surgery & animal in recovery area'
+p44
+aI1
+asS'second_check'
+p45
+(lp46
+I1440
+aI00
+aS'Follow up check - next day'
+p47
+aI5
+asS'started'
+p48
+(lp49
+I0
+aF1331763691.505656
+aS'Start surgery'
+p50
+aI0
+asS'first_check'
+p51
+(lp52
+I120
+aI00
+aS'Follow up check - 2 hours later'
+p53
+aI4
+asS'aborted'
+p54
+(lp55
+I0
+aI00
+aS'Abort this surgery (must specify reason)'
+p56
+aI0
+asS'recovered'
+p57
+(lp58
+I10
+aI00
+aS'Animal behaving normally & back in home cage'
+p59
+aI3
+assg34
+S'EEG Sleep 1'
+p60
+sba(isurgeryLogger
+surgery
+p61
+(dp62
+g4
+S''
+sg5
+F1331763704.7793911
+sg6
+Nsg7
+F1331763719.057651
+sg8
+I2
+sg9
+S'Postponed to tomorrow'
+p63
+sg10
+I2
+sg11
+(dp64
+S'saline'
+p65
+(lp66
+I0
+aI00
+aS'Saline & post-operative drugs given'
+p67
+aI2
+asS'finish'
+p68
+(lp69
+I0
+aI00
+aS'Finish surgery & animal in recovery area'
+p70
+aI1
+asS'second_check'
+p71
+(lp72
+I1440
+aI00
+aS'Follow up check - next day'
+p73
+aI5
+asS'started'
+p74
+(lp75
+I0
+aI00
+aS'Start surgery'
+p76
+aI0
+asS'first_check'
+p77
+(lp78
+I120
+aI00
+aS'Follow up check - 2 hours later'
+p79
+aI4
+asS'aborted'
+p80
+(lp81
+I0
+aF1331763719.057647
+aS'Abort this surgery (must specify reason)'
+p82
+aI0
+asS'recovered'
+p83
+(lp84
+I10
+aI00
+aS'Animal behaving normally & back in home cage'
+p85
+aI3
+assg34
+S'Implanting cannula'
+p86
+sba(isurgeryLogger
+surgery
+p87
+(dp88
+g4
+S''
+sg5
+F1331764713.440007
+sg6
+Nsg7
+I00
+sg8
+I2
+sg9
+S''
+sg10
+I3
+sg11
+(dp89
+S'saline'
+p90
+(lp91
+I0
+aI00
+aS'Saline & post-operative drugs given'
+p92
+aI2
+asS'finish'
 p93
 (lp94
 I0
-aF1331755046.432647
-aS'Saline & post-operative drugs given'
+aI00
+aS'Finish surgery & animal in recovery area'
 p95
-aI2
-asS'finish'
+aI1
+asS'second_check'
 p96
 (lp97
-I0
-aF1331755037.1513369
-aS'Finish surgery & animal in recovery area'
+I1440
+aI00
+aS'Follow up check - next day'
 p98
-aI1
-asS'second_check'
+aI5
+asS'started'
 p99
 (lp100
-I1440
+I0
 aI00
-aS'Follow up check - next day'
+aS'Start surgery'
 p101
-aI5
-asS'started'
+aI0
+asS'first_check'
 p102
 (lp103
-I0
-aF1331754944.5984521
-aS'Start surgery'
+I120
+aI00
+aS'Follow up check - 2 hours later'
 p104
-aI0
-asS'first_check'
+aI4
+asS'aborted'
 p105
 (lp106
-I120
+I0
 aI00
-aS'Follow up check - 2 hours later'
+aS'Abort this surgery (must specify reason)'
 p107
-aI4
-asS'aborted'
+aI0
+asS'recovered'
 p108
 (lp109
-I0
-aF1331755067.290967
-aS'Abort this surgery (must specify reason)'
+I10
+aI00
+aS'Animal behaving normally & back in home cage'
 p110
-aI0
-asS'recovered'
+aI3
+assg34
+S'Testing equipment'
 p111
-(lp112
-I10
-aF1331755050.746937
-aS'Animal behaving normally & back in home cage'
-p113
-aI3
-assg35
-S'teszfzsfz'
-p114
-sba(isurgeryLogger
-surgery
-p115
-(dp116
-g4
-S''
-sg5
-F1331760185.9990261
-sg6
-Nsg7
-F1331760309.3209751
-sg8
-I0
-sg9
-S'Wrong animal'
-p117
-sg11
-I4
-sg12
-(dp118
-S'saline'
-p119
-(lp120
-I0
-aI00
-aS'Saline & post-operative drugs given'
-p121
-aI2
-asS'finish'
-p122
-(lp123
-I0
-aF1331760297.3020201
-aS'Finish surgery & animal in recovery area'
-p124
-aI1
-asS'second_check'
-p125
-(lp126
-I1440
-aI00
-aS'Follow up check - next day'
-p127
-aI5
-asS'started'
-p128
-(lp129
-I0
-aF1331760242.5258889
-aS'Start surgery'
-p130
-aI0
-asS'first_check'
-p131
-(lp132
-I120
-aI00
-aS'Follow up check - 2 hours later'
-p133
-aI4
-asS'aborted'
-p134
-(lp135
-I0
-aF1331760309.320972
-aS'Abort this surgery (must specify reason)'
-p136
-aI0
-asS'recovered'
-p137
-(lp138
-I10
-aI00
-aS'Animal behaving normally & back in home cage'
-p139
-aI3
-assg35
-S'EEG3'
-p140
 sba.

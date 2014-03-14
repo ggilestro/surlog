@@ -32,7 +32,8 @@ from string import Template
 import cPickle as pickle
 
 
-url = '/cgi-bin/surlogw.py'
+URL = 'index.py'
+TEMPLATES = '/var/www/surlog/templates/'
 authorised_IPs = ['127.0.0.1']
 locked = False
 
@@ -42,6 +43,10 @@ end_list = None # shows last 30 surgeries
 
 
 ###########################################
+
+
+
+    
 
 class surgeryLoggerApp():
     def __init__(self):
@@ -138,12 +143,21 @@ class surgeryLoggerApp():
     def isLoggedIn(self):
         '''
         '''
-        if self.loggedUser:
+        if self.loggedUser and self.loggedUser != '0':
             user = int(self.loggedUser)
             self.v['logged_user'] = users[user]
-            self.v['first_link'] = '<a href="%s?add=%s">Start a new surgery</a>' % (url, 1)
-            self.v['second_link'] = '<a href="%s?listuser=%s">List all my surgeries</a>' % (url, user)
+            self.v['first_link'] = '<a href="%s?add=%s">Start a new surgery</a>' % (URL, 1)
+            self.v['second_link'] = '<a href="%s?listuser=%s">List all my surgeries</a>' % (URL, user)
+            self.v['third_link'] = '<a href="%s?export=%s">Export all my surgeries</a>' % (URL, user)
             self.v['logout_link'] = '<a href="%s?logout=1">Logout</a>' % url
+        
+        elif self.loggedUser and self.loggedUser == '0':
+            user = int(self.loggedUser)
+            self.v['logged_user'] = users[user]
+            self.v['first_link'] = '<a href="%s?listall=%s">List all surgeries</a>' % (URL, 1)
+            self.v['second_link'] = '<a href="%s?listopen=%s">List all open surgeries</a>' % (URL, 1)
+            self.v['logout_link'] = '<a href="%s?logout=1">Logout</a>' % URL
+            
         
         
     def doLogin(self, user):
@@ -225,14 +239,11 @@ class surgeryLoggerApp():
         
         self.ss.saveToFile()
 
-    def export(self):
+    def export(self, uid):
         '''
         '''
-        #Exporting
-        #if user and export:
-        if int(user) < 0 : u = None
-        else: u = int(user)
-        csv = self.ss.exportAsCSV( u )
+        
+        csv = self.ss.exportAsCSV( uid )
         header = "Content-type: text/csv\nContent-disposition: attachment; filename=surgery_table.csv\n\n"
         print header + csv
         os.sys.exit()
@@ -260,15 +271,15 @@ class surgeryLoggerApp():
         self.v['list_title'] = '%s\'s recent surgeries' % un
 
         table  =  "<table class=\"altrowstable\" id=\"alternatecolor\">"
-        table +=  "<tr><td>#%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n" % ('ID', 'Name', 'Started on', 'Closed on', 'Edit')
+        table +=  "<tr><td>#%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n" % ('ID', 'Name', 'Started on', 'Closed on', 'Action')
 
         for s in self.ss.surgeriesFromUser(ui)[start_list:end_list]:
             
             if s.isOpen():
-                action = '<a href=\"%s?edit=%s\">Edit</a>' % (url, s.sid)
+                action = '<a href=\"%s?edit=%s\">Edit</a>' % (URL, s.sid)
                 isOpen = '<strong>Open</strong>'
             else:
-                action = '<a href=\"%s?view=%s\">View</a>' % (url, s.sid)
+                action = '<a href=\"%s?view=%s\">View</a>' % (URL, s.sid)
                 isOpen = s.getEndTime()
                 
             table += "<tr><td>#%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n" % (s.sid, s.name, s.getStartTime(), isOpen, action)
@@ -294,7 +305,7 @@ class surgeryLoggerApp():
             
             isOpen = [ s.getEndTime(), '<strong>Open</strong>' ][s.isOpen()]
                 
-            table += "<tr><td>#%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td><a href=\"%s?view=%s\">View</a></td></tr>\n" % (s.sid, users[s.user], s.name, s.getStartTime(), isOpen, url, s.sid)
+            table += "<tr><td>#%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td><a href=\"%s?view=%s\">View</a></td></tr>\n" % (s.sid, users[s.user], s.name, s.getStartTime(), isOpen, URL, s.sid)
         
         table += "</table>"
         
@@ -449,6 +460,7 @@ class surgeryLoggerApp():
         add = self.form.getvalue("add", "")
         export = self.form.getvalue("export", "")
         listall = self.form.getvalue("listall", "")
+        listopen = self.form.getvalue("listopen", "")
         listuser = self.form.getvalue("listuser", "")
 
         added_new = self.form.getvalue("added_new", "")
@@ -456,14 +468,15 @@ class surgeryLoggerApp():
 
         ##
         self.cookie = self.loadCookie()
-        if self.cookie: self.loggedUser = self.cookie['user'].value
+        if self.cookie and self.cookie.has_key('user'): self.loggedUser = self.cookie['user'].value
         
         if login: self.doLogin(login)
         if logout: self.doLogout()
 
         isAuthorised = cgi.escape(os.environ["REMOTE_ADDR"]) in authorised_IPs or not locked
+        isReviewer = (self.loggedUser == '0' )
         
-        if self.loggedUser and isAuthorised:
+        if self.loggedUser and isAuthorised and not isReviewer:
             
             self.isLoggedIn()
         
@@ -473,9 +486,7 @@ class surgeryLoggerApp():
 
             elif add: self.addPage()
 
-            elif listall: self.listAllPage()
-
-            elif export: self.export()
+            elif export: self.export(int(export))
 
             elif listuser: self.listUserPage()
 
@@ -489,9 +500,18 @@ class surgeryLoggerApp():
 
             else: self.listUserPage() # Default page
         
-        elif isAuthorised:
+        elif isAuthorised and not self.loggedUser:
             self.loginPage()
 
+        elif isAuthorised and isReviewer:
+            
+            self.isLoggedIn()
+            
+            if listall: self.listAllPage(onlyOpen=False)
+            elif listopen: self.listAllPage(onlyOpen=True)
+            elif view: self.viewPage(int(view))
+
+            
         else:
             self.forbiddenPage()
         
@@ -500,8 +520,8 @@ class surgeryLoggerApp():
         '''
         if self.page:
         
-            template_header = '/srv/http/surlog/header.tmpl'
-            template_body = '/srv/http/surlog/' + self.page
+            template_header = TEMPLATES + 'header.tmpl'
+            template_body = TEMPLATES + self.page
             
             fh1 = open (template_header, 'r')
             fh2 = open (template_body, 'r')
