@@ -214,8 +214,7 @@ class surgeryLoggerApp():
         chk_finish = self.form.getvalue("chk_finish", "")
         chk_saline = self.form.getvalue("chk_saline", "")
         chk_recovered = self.form.getvalue("chk_recovered", "")
-        chk_first_check = self.form.getvalue("chk_first_check", "")
-        chk_second_check = self.form.getvalue("chk_second_check", "")
+        chk_health_check = self.form.getvalue("chk_health_check", "")
         chk_aborted = self.form.getvalue("chk_aborted", "")
         reason_aborted = self.form.getvalue("reason_aborted","")
 
@@ -225,10 +224,9 @@ class surgeryLoggerApp():
         if chk_finish == 'on': s.stampProperty('finish')
         if chk_saline == 'on': s.stampProperty('saline')
         if chk_recovered == 'on': s.stampProperty('recovered')
-        if chk_first_check == 'on': s.stampProperty('first_check')
         
-        if chk_second_check == 'on':
-            s.stampProperty('second_check')
+        if chk_health_check == 'on':
+            s.stampProperty('health_check')
             s.Close()
             
         if chk_aborted == 'on': 
