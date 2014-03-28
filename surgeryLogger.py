@@ -208,7 +208,7 @@ class surgery():
         '''
         '''
         if self.ended:
-            return self.formatTime(self.opened).strftime('%d-%m-%y %H:%M')
+            return self.formatTime(self.ended).strftime('%d-%m-%y %H:%M')
 
         else:
             return ''
